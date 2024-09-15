@@ -18,7 +18,11 @@ app.use(express.json())
 app.post('/week-7/signup',async (req,res)=>{
     const inputValidation = z.object({
         username:z.string().min(3),
-        password:z.string().min(8).max(20),
+        password:z.string().min(8, { message: "Password must be at least 8 characters long" })
+        .refine((val) => /[a-z]/.test(val), { message: "Password must contain at least one lowercase letter" }) 
+        .refine((val) => /[A-Z]/.test(val), { message: "Password must contain at least one uppercase letter" }) 
+        .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one digit" }) 
+        .refine((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), { message: "Password must contain at least one special character" }),
         email:z.string().email(),
     })
 
@@ -56,7 +60,7 @@ app.post('/week-7/signin',async (req,res)=>{
 
     const validationResult = inputValidation.safeParse(req.body)
     if(!validationResult.success) return res.status(400).send({message:validationResult.error.issues[0].message})
-        
+
     const email = req.body.email
     const password = req.body.password
 
