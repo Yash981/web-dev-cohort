@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { auth, ComparePassword } from './auth';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import { z } from 'zod';
 const saltRounds = 10
 dotenv.config();
 
@@ -15,6 +16,17 @@ app.use(express.json())
 
 //user sign up
 app.post('/week-7/signup',async (req,res)=>{
+    const inputValidation = z.object({
+        username:z.string().min(3),
+        password:z.string().min(8).max(20),
+        email:z.string().email(),
+    })
+
+    const validationResult = inputValidation.safeParse(req.body)
+
+    if(!validationResult.success){
+        return res.status(400).send({message:validationResult.error.issues[0].message})
+    }
     const username = req.body.username
     const password = req.body.password
     const email = req.body.email
@@ -37,6 +49,14 @@ app.post('/week-7/signup',async (req,res)=>{
 
 // user login
 app.post('/week-7/signin',async (req,res)=>{
+    const inputValidation = z.object({
+        email:z.string().email(),
+        password:z.string().min(8).max(20),
+    })
+
+    const validationResult = inputValidation.safeParse(req.body)
+    if(!validationResult.success) return res.status(400).send({message:validationResult.error.issues[0].message})
+        
     const email = req.body.email
     const password = req.body.password
 
