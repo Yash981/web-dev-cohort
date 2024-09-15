@@ -12,7 +12,8 @@ const TodosSchema = new Schema({
     userId: objectId,
     title: String,
     description: String,
-    done: Boolean
+    done: Boolean,
+    timestamp:Date
 })
 
 

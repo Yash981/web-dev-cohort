@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
 export function auth(req: Request, res:Response, next: NextFunction) {
     const token = req.headers.authorization
@@ -16,4 +17,8 @@ export function auth(req: Request, res:Response, next: NextFunction) {
             message: "unauthorized"
         })
     }
+}
+export const ComparePassword = async (password:string,hashedPassword:string)=>{
+    const compassword = await bcrypt.compare(password,hashedPassword)
+    return compassword
 }
