@@ -24,7 +24,7 @@ app.post('/week-7/signup',async (req,res)=>{
         .refine((val) => /[0-9]/.test(val), { message: "Password must contain at least one digit" }) 
         .refine((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), { message: "Password must contain at least one special character" }),
         email:z.string().email(),
-    })
+    }).strict()
 
     const validationResult = inputValidation.safeParse(req.body)
 
