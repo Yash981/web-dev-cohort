@@ -9,11 +9,11 @@ const userSchema = new Schema({
     email: { type: String,unique: true} 
 })
 const TodosSchema = new Schema({
-    userId: objectId,
+    userId: { type: objectId, ref: 'User' },
     title: String,
     description: String,
     done: Boolean,
-    timestamp:Date
+    timestamp:{ type: Date, default: Date.now }
 })
 
 
