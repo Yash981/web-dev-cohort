@@ -7,6 +7,8 @@ const userSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
+  isAdmin: { type: Boolean, default: false },
+  courses: [{ type: objectId, ref: 'Course' }] 
 });
 
 const AdminSchema = new Schema({
@@ -21,12 +23,21 @@ const CourseSchema = new Schema({
   description: String,
   price: Number,
   imageUrl: String,
-  creatorId: objectId,
+  creatorId: {
+    type: objectId,
+    ref: "User",
+  },
 });
 
 const purchaseSchema = new Schema({
-  userId: objectId,
-  courseId: objectId,
+  userId: {
+    type: objectId,
+    ref: "User",
+  },
+  courseId: {
+    type: objectId,
+    ref: "Course",
+  },
 });
 
 const userModel = mongoose.model("User", userSchema);
