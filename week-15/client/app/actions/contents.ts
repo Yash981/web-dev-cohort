@@ -6,7 +6,7 @@ export const getAllContents = async () => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NzM5YjVjYjE3NzJmN2JkYjNmYjQ3ODIiLCJ1c2VybmFtZSI6ImhlbGxvIiwiaWF0IjoxNzMxODM1MzUwfQ.Ffl5buG1yhZCeyhJ9RUxJCv1M9QWNQ8lhAHW0q_s4To'
+                    'Authorization':''
                 }
             }
         )
