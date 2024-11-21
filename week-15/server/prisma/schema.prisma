@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  username  String @unique
+  password  String 
+  content   Content[]
+  links      Link[]
+}
+
+model Tags{
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String @unique
+  content TagsOnContent[]
+}
+model Content{
+    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    link  String 
+    type  ContentTypes 
+    title String
+    tags  TagsOnContent[]
+    userId String @db.ObjectId
+    user User @relation(fields: [userId],references: [id])
+    createdAt DateTime @default(now())
+}
+model TagsOnContent{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  contentId String @db.ObjectId
+  tagId String @db.ObjectId
+  content Content @relation(fields: [contentId],references: [id],onDelete: Cascade)
+  tag  Tags @relation(fields: [tagId],references: [id],onDelete: Cascade)
+
+  @@index([contentId,tagId],map: "content_tag_index")
+}
+model Link{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  hash String @unique
+  userId String @db.ObjectId
+  user User @relation(fields: [userId],references: [id])
+}
+enum ContentTypes {
+  IMAGE
+  VIDEO
+  ARTICLE
+  AUDIO
+}
