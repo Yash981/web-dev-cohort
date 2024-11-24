@@ -58,7 +58,7 @@ const AddContentSchema = z.object({
 });
 
 export const FormFields = () => {
-    const [imagePreview, setImagePreview] = useState<any>(null);
+    const [, setImagePreview] = useState<any>(null);
     const [showField, setShowField] = useState('')
     const form = useForm<z.infer<typeof AddContentSchema>>({
         resolver: zodResolver(AddContentSchema),
@@ -74,12 +74,8 @@ export const FormFields = () => {
 
     const onSubmit = async (data: z.infer<typeof AddContentSchema>) => {
         const response = AddContentSchema.safeParse(data)
-        console.log(response, 'response')
-        if (!response.success) {
-            console.log(response.error, 'error')
-            return;
-        }
-        console.log(JSON.stringify(data), 'val')
+        // console.log(response.data, 'response')
+        alert(JSON.stringify(response.data))
 
     }
     const getTypeIcon = (type: string) => {
@@ -95,7 +91,7 @@ export const FormFields = () => {
         }
     }
     return (
-        <div className="">
+        <div className="w-full">
             <Form {...form} >
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -148,25 +144,6 @@ export const FormFields = () => {
                             </FormItem>
                         )}
                     />
-                    {/* {showField === 'IMAGE' &&
-                        <FormField
-                            control={form.control}
-                            name="image"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel >Add Image</FormLabel>
-                                    <FormControl>
-                                        <Input type="file"
-                                            onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)
-                                            }
-                                            accept=".jpg, .jpeg, .png,"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    } */}
                     {showField === 'IMAGE' && (
                         <FormField
                             control={form.control}
@@ -190,7 +167,7 @@ export const FormFields = () => {
                                                         if (file) {
                                                             // Update the field with the selected image file
                                                             field.onChange(file);
-                                                            setImagePreview(URL.createObjectURL(file)); // Update the preview state
+                                                            setImagePreview(URL.createObjectURL(file));
                                                         }
                                                     }}
                                                     accept=".jpg, .jpeg, .png"
@@ -198,10 +175,9 @@ export const FormFields = () => {
                                             </label>
                                         </div>
                                     </FormControl>
-                                    {/* Display image preview if there's an uploaded image */}
                                     {field.value && (
                                         <div className="mt-4 flex flex-col items-center">
-                                            <Image src={URL.createObjectURL(field.value)} alt="Uploaded Preview" className="w-32 h-32 object-cover mb-2" width={32} height={32}/>
+                                            <Image src={URL.createObjectURL(field.value)} alt="Uploaded Preview" className="w-32 h-32 object-cover mb-2" width={32} height={32} />
                                             <p className="text-sm text-success">Image uploaded successfully!</p>
                                         </div>
                                     )}
@@ -243,7 +219,7 @@ export const FormFields = () => {
                                 <FormControl>
                                     <TagInput
                                         {...field}
-                                        placeholder="Add Tags"
+                                        placeholder="Add Tags(Press Enter or SpaceBar)"
                                         arrayProp={'tags'}
                                         required={false}
                                         maxlength={15}
@@ -253,7 +229,7 @@ export const FormFields = () => {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" variant="secondary">Add Note</Button>
+                    <Button type="submit" variant="default">Add Note</Button>
                 </form>
             </Form>
         </div>

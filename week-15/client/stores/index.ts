@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 type DialogState = {
     isOpen: boolean;
-    onOpen :()=>void;
+    isShareBrainModel: boolean | null;
+    onOpen :(isShareBrainModel:boolean)=>void;
     onClose:()=>void;
 }
 export const useDialogStore = create<DialogState>((set)=>({
     isOpen: false,
-    onOpen:() => set({ isOpen: true }),
+    isShareBrainModel: null,
+    onOpen:(isShareBrainModel) => set({ isOpen: true,isShareBrainModel }),
     onClose: () => set({ isOpen:false })
 }))

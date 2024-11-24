@@ -15,8 +15,8 @@ const HomeComponent = () => {
                 <h1 className="text-3xl  font-medium">All Notes</h1>
                 <div className="flex gap-3 mr-2">
                     <ModeToggle />
-                    <Button variant={"secondary"} className="rounded"><Share /> Share Brain</Button>
-                    <Button variant={"secondary"} className="rounded" onClick={onOpen}><Plus /> Add Content</Button>
+                    <Button variant={"secondary"} className="rounded" onClick={()=>onOpen(true)}><Share /> Share Brain</Button>
+                    <Button variant={"secondary"} className="rounded" onClick={()=>onOpen(false)}><Plus /> Add Content</Button>
                 </div>
             </div>
 
