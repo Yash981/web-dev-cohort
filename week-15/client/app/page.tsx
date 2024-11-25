@@ -6,6 +6,7 @@ export interface Tag{
   tag:string
 }
 export interface ContentsProp {
+  id:string;
   link?: string,
   image?:string,
   type:  'IMAGE' | 'ARTICLE' | 'LINK',
@@ -16,13 +17,13 @@ export interface ContentsProp {
 }
 export default async function Home() {
   const contents = await getAllContents()
-  // console.log(contents.contents)
+  console.log(contents.contents)
   return (
     <div className="w-full flex flex-col flex-wrap">
       <HomeComponent />
       <div className="mr-10 ml-10 flex gap-2 flex-wrap justify-start items-start">
         {contents && contents.contents.map((content: ContentsProp, index: number) => {
-          return <NotesCards link={content.link} type={content.type} key={index} title={content.title} createdAt={content.createdAt} tags={content.tags}/>
+          return <NotesCards link={content.link} type={content.type} key={index} title={content.title} createdAt={content.createdAt} tags={content.tags} id={content?.id}/>
         })}
       </div>
     </div>

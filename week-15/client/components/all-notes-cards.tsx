@@ -1,3 +1,4 @@
+"use client"
 import { ContentsProp, Tag } from "@/app/page";
 import {
     Card,
@@ -6,11 +7,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import {  Share2Icon, Trash2Icon } from "lucide-react";
+import {  Share2Icon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import Link from "next/link";
 import Script from "next/script";
-const NotesCards = ({ link, title, type, createdAt, tags }: ContentsProp) => {
+import { AlertDialogDelete } from "./delete-alert-dialog";
+const NotesCards = ({ link, title, type, createdAt, tags,id }: ContentsProp) => {
+    
     return (
         <>
             <Card className="w-[350px]  mt-10 min-h-52">
@@ -18,7 +21,7 @@ const NotesCards = ({ link, title, type, createdAt, tags }: ContentsProp) => {
                     <CardTitle>{title}</CardTitle>
                     <div className="flex gap-4">
                         <Share2Icon cursor={"pointer"} />
-                        <Trash2Icon cursor={"pointer"} />
+                        <AlertDialogDelete id={id}/> 
                     </div>
                 </CardHeader>
                 <CardContent>
