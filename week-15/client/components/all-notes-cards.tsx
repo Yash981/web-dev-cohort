@@ -5,43 +5,69 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-  } from "@/components/ui/card"  
-import { Share2Icon, Trash2Icon } from "lucide-react";
+} from "@/components/ui/card"
+import {  Share2Icon, Trash2Icon } from "lucide-react";
 import { Badge } from "./ui/badge";
-const NotesCards = ({link,title,type,createdAt,tags}:ContentsProp) => {
+import Link from "next/link";
+import Script from "next/script";
+const NotesCards = ({ link, title, type, createdAt, tags }: ContentsProp) => {
     return (
         <>
-            <Card className="w-[350px]  mt-10">
+            <Card className="w-[350px]  mt-10 min-h-52">
                 <CardHeader className="flex justify-between flex-row">
                     <CardTitle>{title}</CardTitle>
                     <div className="flex gap-4">
-                        <Share2Icon cursor={"pointer"}/>
-                        <Trash2Icon cursor={"pointer"}/>
+                        <Share2Icon cursor={"pointer"} />
+                        <Trash2Icon cursor={"pointer"} />
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <p>{link}</p>
-                    <p>{type}</p>
+                    {type === 'LINK' &&
+                        link?.includes("twitter.com") ? (
+                        <>
+                            <blockquote
+                                className="twitter-tweet"
+                                data-lang="en"
+                                data-theme="light"
+                            >
+                                <a href={link}></a>
+                            </blockquote>
+                            <Script
+                                src="https://platform.twitter.com/widgets.js"
+                                strategy="lazyOnload" 
+                            />
+                            
+                        </>
+                    ) : (
+                        <div className="">
+                            <Link href={link!} className="" target="_blank" rel="noopener noreferrer">
+                                <span className="underline cursor-pointer">
+                                    {link}
+                                </span>
+                            </Link>
+                        </div>
+                    )
+                    }
                 </CardContent>
                 <CardFooter className="grid gap-2">
                     <div className="flex gap-2">
-                    {tags && tags.map((tag:Tag)=>{
-                       return (
-                        <div key={tag.id}>
-                            <Badge>#{tag.tag}</Badge>
-                        </div>
-                       )
-                    })}
+                        {tags && tags.map((tag: Tag) => {
+                            return (
+                                <div key={tag.id}>
+                                    <Badge>#{tag.tag}</Badge>
+                                </div>
+                            )
+                        })}
                     </div>
                     <p>Added on {new Date(createdAt).toLocaleString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true
-  })}</p>
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: true
+                    })}</p>
                 </CardFooter>
             </Card>
         </>

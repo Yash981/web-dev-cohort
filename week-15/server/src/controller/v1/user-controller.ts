@@ -8,7 +8,6 @@ import crypto from "crypto";
 import prisma from "../../db/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { randomUUID } from "crypto";
 
 export const JWT_SECRET = "Yashwanth12627";
 export const UserSignup = async (req: Request, res: Response) => {

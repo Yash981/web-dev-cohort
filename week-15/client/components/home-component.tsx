@@ -12,7 +12,7 @@ const HomeComponent = () => {
     return (
         <div className="w-full">
             <div className="mt-10 flex justify-between">
-                <h1 className="text-3xl  font-medium">All Notes</h1>
+                <h1 className="text-3xl  font-medium ml-10">All Notes</h1>
                 <div className="flex gap-3 mr-2">
                     <ModeToggle />
                     <Button variant={"secondary"} className="rounded" onClick={()=>onOpen(true)}><Share /> Share Brain</Button>

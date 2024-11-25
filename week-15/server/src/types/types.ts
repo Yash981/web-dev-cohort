@@ -21,7 +21,7 @@ export const userAuthschema = z.object({
 });
 
 export const AddContentschema = z.object({
-    type: z.enum(["IMAGE", "VIDEO", "ARTICLE", "AUDIO"], { message: "Invalid content type" }),
+    type: z.enum(["IMAGE", "ARTICLE", "LINK"], { message: "Invalid content type" }),
     link: z.string(),
     title:z.string(),
     tags: z.array(z.string())

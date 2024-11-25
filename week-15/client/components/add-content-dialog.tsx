@@ -11,7 +11,6 @@ import ShareBrainModel from "./share-brain-model"
 
 export function AddContentDialog() {
   const { isOpen, onClose, isShareBrainModel } = useDialogStore()
-  console.log(isOpen, 'isopne')
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md mx-auto">
