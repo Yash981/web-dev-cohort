@@ -3,7 +3,7 @@ import HomeComponent from "@/components/home-component";
 import { getAllContents } from "./actions/contents";
 export interface Tag{
   id:string,
-  tag:string
+  title:string
 }
 export interface ContentsProp {
   id:string;
@@ -17,7 +17,17 @@ export interface ContentsProp {
 }
 export default async function Home() {
   const contents = await getAllContents()
-  console.log(contents.contents)
+  console.log('/',contents)
+  if (!contents || contents.contents.length === 0) {
+    return (
+      <>
+        <div className="w-full flex flex-col items-center justify-center min-h-[500px] gap-2">
+            <h1 className="text-2xl text-gray-500">No contents found.</h1>
+            <HomeComponent noContent={true}/>
+        </div>
+      </>
+    );
+}
   return (
     <div className="w-full flex flex-col flex-wrap">
       <HomeComponent />

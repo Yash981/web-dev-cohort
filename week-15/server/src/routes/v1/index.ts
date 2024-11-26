@@ -16,4 +16,4 @@ Routes.delete('/content/:contentId',userMiddleware,deleteContent)
 
 Routes.post('/brain/share',userMiddleware,shareBrainLink)
 
-Routes.get('/brain/:sharelink',userMiddleware,fetchSharedLinkContent)
+Routes.get('/brain/:sharelink',fetchSharedLinkContent)

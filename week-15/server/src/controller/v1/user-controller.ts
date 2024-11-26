@@ -133,7 +133,7 @@ export const AddContent = async (req: Request, res: Response) => {
         tagId: tagId,
       })),
     });
-    console.log(content, tagsOncontentss);
+    // console.log(content, tagsOncontentss);
     res.status(200).json({
       message: "Content Added successfully",
       response: content,
@@ -167,7 +167,7 @@ export const getAllContents = async (req: Request, res: Response) => {
       userId:content.userId,
       tags: content.tags.map((tagOnContent) => ({
         id: tagOnContent.tag.id,
-        tag: tagOnContent.tag.title,
+        title: tagOnContent.tag.title,
       })),
     }));
     // console.log(contents,'conte',formattedContents)
@@ -208,65 +208,109 @@ export const deleteContent = async (req: Request, res: Response) => {
 
 export const shareBrainLink = async (req: Request, res: Response) => {
   const parsedShareBrainLink = shareBrainLinkschema.safeParse(req.body);
+  
   if (!parsedShareBrainLink.success) {
     res.status(400).json({
-      mesage: "Invalid Inputs",
+      message: "Invalid Inputs",
       error: parsedShareBrainLink.error.errors,
     });
-    return;
+    return 
   }
-  const existingLink = await prisma.link.findFirst({
-    where: { userId: req.user?.id as string },
-  });
-  if (existingLink) {
-    res.status(200).json({
-      link: `http://localhost:3000/brain/${existingLink.hash}`,
+
+  if (!parsedShareBrainLink.data.share) {
+    await prisma.link.deleteMany({
+      where: { userId: req.user?.id }
     });
-    return;
+    res.status(200).json({ message: "Share link removed" });
+    return 
   }
+
   try {
-    const shareLink = await prisma.link.create({
+    const existingLink = await prisma.link.findFirst({
+      where: { userId: req.user?.id }
+    });
+
+    if (existingLink) {
+      res.status(200).json({
+        link: `http://localhost:3000/brain/${existingLink.hash}`,
+      });
+      return 
+    }
+
+    const newShareLink = await prisma.link.create({
       data: {
         userId: req.user?.id as string,
         hash: crypto.randomBytes(16).toString("hex"),
       },
     });
-    res.status(200).json({
-      link: `http://localhost:3000/brain/${shareLink.hash}`,
+
+    res.status(201).json({
+      link: `http://localhost:3000/brain/${newShareLink.hash}`,
     });
   } catch (error) {
+    console.error('Share link creation error:', error);
     res.status(500).json({
       message: "Internal server error",
-      error,
+      error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 };
 
 export const fetchSharedLinkContent = async (req: Request, res: Response) => {
-  const shareLink = req.params.id;
-  console.log(req.user);
+  const shareLink = req.params.sharelink; 
+  console.log(shareLink,'sharelink')
   try {
+    const linkRecord = await prisma.link.findUnique({
+      where: { hash: shareLink },
+      select: { userId: true }
+    });
+
+    if (!linkRecord) {
+      res.status(404).json({
+        message: "Invalid share link",
+      });
+      return 
+    }
+
     const contents = await prisma.content.findMany({
       where: {
-        userId: req.user?.id as string,
+        userId: linkRecord.userId,
       },
       include: {
         user: true,
+        tags:{
+          select:{
+            tag:true
+          }
+        }
       },
     });
-    if (contents.length == 0) {
+    console.log(contents,'contents')
+    if (contents.length === 0) {
       res.status(404).json({
         message: "No content found",
         username: "",
         contents: [],
       });
-      return;
+      return 
     }
+    const allContents = contents.map((content)=>({
+      ...content,
+      tags: content.tags.map((tagOnContent) => ({
+        id: tagOnContent.tag.id,
+        title: tagOnContent.tag.title,
+      }))
+    }))
     res.status(200).json({
-      username: contents[0]?.user?.username,
-      contents,
+      message:"Content fetched successfully",
+      username: allContents[0]?.user?.username,
+      contents: allContents,
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
+    console.error('Fetch shared link content error:', error);
+    res.status(500).json({ 
+      message: "Internal Server Error", 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    });
   }
 };
