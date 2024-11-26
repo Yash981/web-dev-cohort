@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation"
 import { useDialogStore } from "@/stores"
 const cleanObject = (obj: Record<string, any>): Record<string, any> => {
     return Object.fromEntries(
-        Object.entries(obj).filter(([_, value]) => value !== undefined && value !== "")
+        Object.entries(obj).filter(([, value]) => value !== undefined && value !== "")
     );
 };
 const AddContentSchema = z.object({
@@ -93,6 +93,7 @@ export const FormFields = () => {
             const res = await AddContents(cleanObject(response.data) as Record<string,any>)
             onClose()
             router.refresh()
+            return res
         } catch (error) {
             console.log('error in adding',error)
         }

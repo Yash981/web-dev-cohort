@@ -12,12 +12,12 @@ const AuthLayout = async ({ children }: AuthLayoutProps) => {
     let currentPathname = ""
     if(referer) currentPathname = new URL(referer).pathname
     return (
-        <div className="flex justify-center items-center h-full">
-        <Card className="flex justify-center items-center ">
-            <CardHeader>
+        <div className="flex justify-center items-center h-screen w-full">
+        <Card className="flex justify-center items-center min-w-96 min-h-96 flex-col gap-8">
+            <CardHeader className="">
                 <CardTitle>{currentPathname === '/login' ? 'Login Page': 'Signup Page'}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="w-full">
                 {children}
             </CardContent>
         </Card>

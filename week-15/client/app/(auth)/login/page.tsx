@@ -1,9 +1,10 @@
+import { LoginPageForm } from "@/components/login-form";
 const LoginPage = () => {
-    return ( 
-        <>
-        <h1>Login Page</h1>
-        </>
-     );
+    return (
+        <div className="w-full flex flex-col">
+        <LoginPageForm />
+        </div>
+    );
 }
- 
+
 export default LoginPage;
