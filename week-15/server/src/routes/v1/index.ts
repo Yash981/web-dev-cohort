@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AddContent, deleteContent, fetchSharedLinkContent, getAllContents, shareBrainLink, UserSignin, UserSignup } from "../../controller/v1/user-controller";
+import { AddContent, deleteContent, fetchSharedLinkContent, getAllContents, shareBrainLink, UserLogout, UserSignin, UserSignup } from "../../controller/v1/user-controller";
 import { userMiddleware } from "../../middleware/user-middleware";
 
 export const Routes = Router()
@@ -17,3 +17,5 @@ Routes.delete('/content/:contentId',userMiddleware,deleteContent)
 Routes.post('/brain/share',userMiddleware,shareBrainLink)
 
 Routes.get('/brain/:sharelink',fetchSharedLinkContent)
+
+Routes.get('/logout',UserLogout)

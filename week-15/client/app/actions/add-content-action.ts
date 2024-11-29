@@ -1,15 +1,19 @@
 "use server"
+import { cookies } from 'next/headers';
 
 export const AddContents = async (contentData: any) =>{
     console.log(contentData,JSON.stringify(contentData),'adatat')
     try {
+        const cookieStore = cookies();
+        const token = (await cookieStore).get('token')?.value;
         const response = await fetch(`http://localhost:9000/api/v1/content`,
             {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization':''
+                    "Cookie": token ? `token=${token}` : ''
                 },
+                credentials:"include",
                 body: JSON.stringify(contentData)
             }
         )

@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from "../controller/v1/user-controller";
 export const userMiddleware = (req:Request,res:Response,next:NextFunction) =>{
-    const token = req.headers.authorization
+    console.log(req.cookies,'cookies on server')
+    const token = req.cookies.token
     if(!token){
         res.status(401).json({
             message:"Authentication Required"

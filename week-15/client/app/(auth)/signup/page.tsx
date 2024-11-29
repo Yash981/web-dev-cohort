@@ -1,9 +1,11 @@
+import { AuthPageForm } from "@/components/auth-form";
+
 const SignUpPage = () => {
-    return ( 
-        <>
-        <h1>Hello Signup Page</h1>
-        </>
-     );
+    return (
+        <div className="w-full flex flex-col">
+            <AuthPageForm page={'signup'}/>
+        </div>
+    );
 }
- 
+
 export default SignUpPage;

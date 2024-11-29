@@ -81,13 +81,17 @@ export const UserSignin = async (req: Request, res: Response) => {
       },
       JWT_SECRET
     );
+    res.setHeader('Set-Cookie', [
+      `token=${userToken}; Path=/; HttpOnly; Max-Age=${7 * 24 * 60 * 60}; ${
+        process.env.NODE_ENV === 'production' ? 'Secure; SameSite=Strict' : 'SameSite=Lax'
+      }`
+    ]);
+    console.log(userToken,'userToken')
     res.status(200).json({
       message: "Signed in Successfully",
-      user: {
-        username: existingUser.username,
-        token: userToken,
-      },
+      username: existingUser.username,
     });
+    return;
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -312,5 +316,23 @@ export const fetchSharedLinkContent = async (req: Request, res: Response) => {
       message: "Internal Server Error", 
       error: error instanceof Error ? error.message : 'Unknown error' 
     });
+  }
+};
+
+export const UserLogout = async (req: Request, res: Response) => {
+  try {
+    // Clear the token cookie on the server-side
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/'
+    });
+
+    // Optional: Implement token blacklisting if needed
+    // This depends on your authentication strategy
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error during logout', error });
   }
 };

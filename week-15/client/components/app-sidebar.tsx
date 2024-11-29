@@ -1,8 +1,10 @@
-import { File, Hash, Link, Twitter, Youtube } from "lucide-react"
+
+import { File, Hash, Link, Twitter,  Youtube } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -10,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
+import { NavUser } from "./nav-user"
 // Menu items.
 const items = [
   {
@@ -40,28 +42,33 @@ const items = [
   },
 ]
 
+
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="inset">
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel title="brain">Second Brain</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild tooltip={item.title}>
-                      <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel title="brain">Second Brain</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser/>
+      </SidebarFooter>
+
     </Sidebar>
   )
 }

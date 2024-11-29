@@ -7,8 +7,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { SignupRouteAction } from "@/app/actions/auth-route/signup-route-action";
+import { useRouter } from "next/navigation";
+import { LoginRouteAction } from "@/app/actions/auth-route/login-route-action";
+import { useState } from "react";
 
-const LoginSchema = z.object({
+export const AuthFormSchema = z.object({
     username: z.string().min(3).max(20).refine((val) =>
         3 <= val.length && val.length <= 20,
         { message: "Username must be between 3 and 20 characters long" }),
@@ -31,16 +35,56 @@ const LoginSchema = z.object({
             { message: "Password must contain at least one special character." }
         )
 })
-export const LoginPageForm = () => {
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+type AuthFormProps = {
+    page: string,
+}
+export const AuthPageForm = ({ page }: AuthFormProps) => {
+    const [serverError, setServerError] = useState<string | null>(null);
+    const router = useRouter()
+    const form = useForm<z.infer<typeof AuthFormSchema>>({
+        resolver: zodResolver(AuthFormSchema),
         defaultValues: {
             username: "",
             password: ""
         }
     });
-    const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
-        console.log(data)
+    const onSubmit = async (data: z.infer<typeof AuthFormSchema>) => {
+        const parsedAuthForm = AuthFormSchema.safeParse(data)
+        if (!parsedAuthForm.success) {
+            console.log('Invalid Inputs', { message: parsedAuthForm.error.errors })
+            return;
+        }
+        if (page === 'signup') {
+            try {
+                const response = await SignupRouteAction(parsedAuthForm.data)
+                console.log(response, 'response')
+                if (!response.success) {
+                    console.log(response.errors, 'Error in signingup')
+                    setServerError(response.errors.message)
+                    return
+                }
+                router.push('/login')
+                return response
+            } catch (error) {
+                console.log(error, 'Error Signingup')
+                setServerError('An unexpected error occurred during signup')
+            }
+
+        } else {
+            try {
+                const response = await LoginRouteAction(parsedAuthForm.data)
+                if(!response.success){
+                    console.log(response.errors,'Error in signingIn')
+                    setServerError(response.errors.message)
+                    return
+                }
+                router.push('/')
+                return response
+            } catch (error) {
+                console.log(error, 'Error SigningIn')
+                setServerError('An unexpected error occurred during signIn')
+            }
+        }
     }
     return (
         <Form {...form}>
@@ -69,23 +113,35 @@ export const LoginPageForm = () => {
                             <FormItem>
                                 <FormLabel >Password</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Enter a password" {...field} disabled={false} />
+                                    <Input placeholder="Enter a password" {...field} disabled={false} type="password" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                 </div>
+                {serverError && (
+                    <div className="text-destructive text-sm text-center">
+                        {serverError}
+                    </div>
+                )}
                 <div className="flex justify-center ">
                     <Button variant={"default"} type="submit" className="w-32">Submit</Button>
                 </div>
                 <div className="flex justify-center text-center">
-                    <p>
-                        Don&apos;t have an account?&nbsp;
-                        <Link href="/signup" className="underline underline-offset-4">
-                            Signup
+                    {page === 'signup' ? <p>
+                        Already Have an account ?
+                        <Link href="/login" className="underline underline-offset-4">
+                            Login
                         </Link>
-                    </p>
+                    </p> :
+                        <p>
+                            Don&apos;t have an account?&nbsp;
+                            <Link href="/signup" className="underline underline-offset-4">
+                                Signup
+                            </Link>
+                        </p>
+                    }
                 </div>
             </form>
         </Form>

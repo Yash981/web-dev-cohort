@@ -1,8 +1,8 @@
-import { LoginPageForm } from "@/components/login-form";
+import { AuthPageForm } from "@/components/auth-form";
 const LoginPage = () => {
     return (
         <div className="w-full flex flex-col">
-        <LoginPageForm />
+        <AuthPageForm page="login"/>
         </div>
     );
 }
