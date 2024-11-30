@@ -98,19 +98,36 @@ export const UserSignin = async (req: Request, res: Response) => {
 };
 
 export const AddContent = async (req: Request, res: Response) => {
-  const AddContentParsedData = AddContentschema.safeParse(req.body);
-  if (!AddContentParsedData.success) {
-    res.status(401).json({
-      message: "Invalid Inputs",
-      error: AddContentParsedData.error.errors,
-    });
-    return;
+  // console.log(req, 'req body');
+  //@ts-ignore
+  // console.log(req.file,req.body, 'req file');
+  const parsedData = {
+    title: req.body.title,
+    type: req.body.type,
+    link: req.body.type === 'LINK' ? req.body.link : undefined,
+    tags: req.body.tags ? 
+      (Array.isArray(req.body.tags) ? req.body.tags : [req.body.tags]) 
+      : []
+  };
+  console.log(parsedData,'parsee')
+  //@ts-ignore
+  console.log(req?.file,'req file b4')
+
+    //@ts-ignore
+  if(parsedData.type==='IMAGE' && !req.file) {
+    res.status(400).send({ message: "No image file provided" });
+    return 
   }
-  console.log(req.user);
-  const { type, link, title, tags = [] } = AddContentParsedData.data;
+  //@ts-ignore
+  console.log(req?.file,'req file')
+  //@ts-ignore
+  const imageUrl = req.file?.path ?? '';
+  console.log(imageUrl,'imageUrl')
+  const { type, link, title, tags = [] } = parsedData;
+  // console.log(AddContentParsedData.data,'here data')
   try {
     const tagIds = await Promise.all(
-      tags.map(async (tagTitle: string) => {
+      tags && tags.map(async (tagTitle: string) => {
         const existingTag = await prisma.tags.findUnique({
           where: { title: tagTitle },
         });
@@ -121,22 +138,24 @@ export const AddContent = async (req: Request, res: Response) => {
         return newTag.id;
       })
     );
-    // console.log(tagIds,type,link,title,tags,'hello',req.user)
+    console.log(tagIds,type,link,title,tags,'hello',req.user)
     const content = await prisma.content.create({
       data: {
         type: type,
-        link: link,
+        link:  type==='IMAGE' ? imageUrl : link!,
         title: title,
         userId: req.user?.id as string,
       },
     });
-    console.log(content);
-    const tagsOncontentss = await prisma.tagsOnContent.createMany({
-      data: tagIds.map((tagId: string) => ({
-        contentId: content.id,
-        tagId: tagId,
-      })),
-    });
+    console.log(content,tagIds,'tagsiddd');
+    if(tagIds && tagIds.length > 0){
+      const tagsOncontentss = await prisma.tagsOnContent.createMany({
+        data: tagIds.map((tagId: string) => ({
+          contentId: content.id,
+          tagId: tagId,
+        })),
+      });
+    }
     // console.log(content, tagsOncontentss);
     res.status(200).json({
       message: "Content Added successfully",
@@ -144,6 +163,7 @@ export const AddContent = async (req: Request, res: Response) => {
     });
     return;
   } catch (error) {
+    console.log('internal me',error)
     res.status(500).json({ message: "Internal server error", error });
   }
 };

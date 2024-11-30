@@ -22,11 +22,6 @@ import Image from "next/image"
 import { AddContents } from "@/app/actions/add-content-action"
 import { useRouter } from "next/navigation"
 import { useDialogStore } from "@/stores"
-const cleanObject = (obj: Record<string, any>): Record<string, any> => {
-    return Object.fromEntries(
-        Object.entries(obj).filter(([, value]) => value !== undefined && value !== "")
-    );
-};
 const AddContentSchema = z.object({
     title: z.string().min(3, "Minimum 3 Characters required"),
     type: z.enum(["IMAGE", "ARTICLE", "LINK"], {
@@ -90,9 +85,22 @@ export const FormFields = () => {
             return;
         }
         try {
-            const res = await AddContents(cleanObject(response.data) as Record<string,any>)
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('type', data.type);
+            if (data.type === 'LINK' && data.link) {
+                formData.append('link', data.link);
+            }
+            if (data.type === 'IMAGE' && data.image) {
+                formData.append('image', data.image);
+            }
+            data.tags.forEach((tag, index) => {
+                formData.append(`tags[${index}]`, tag);
+            });
+            const res = await AddContents(formData)
             onClose()
             router.refresh()
+            console.log(res,'resss')
             return res
         } catch (error) {
             console.log('error in adding',error)
@@ -187,6 +195,7 @@ export const FormFields = () => {
                                                         const file = e.target.files ? e.target.files[0] : null;
                                                         if (file) {
                                                             // Update the field with the selected image file
+                                                            console.log(e.target.files,'etargetfiles')
                                                             field.onChange(file);
                                                             setImagePreview(URL.createObjectURL(file));
                                                         }

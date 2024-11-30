@@ -22,9 +22,10 @@ export const userAuthschema = z.object({
 
 export const AddContentschema = z.object({
     type: z.enum(["IMAGE", "ARTICLE", "LINK"], { message: "Invalid content type" }),
-    link: z.string(),
+    link: z.string().optional(),
     title:z.string(),
-    tags: z.array(z.string())
+    image: z.instanceof(File).optional(),
+    tags: z.array(z.string()).optional()
 })
 
 export const shareBrainLinkschema = z.object({

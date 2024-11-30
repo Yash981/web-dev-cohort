@@ -23,9 +23,11 @@ import Image from "next/image"
 import { useTheme } from "next-themes"
 import User from '../public/user.svg'
 import UserWhite from '../public/user-white.svg';
+import { useUserStore } from "@/stores"
 
 export function NavUser() {
     const { theme } = useTheme()
+    const { username } = useUserStore()
     const user = {
             name: "shadcn",
             email: "m@example.com",
@@ -43,10 +45,9 @@ export function NavUser() {
                             size="lg"
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-6"
                         >
-                            <Image width={20} height={20} src={user.avatar} alt="avatar" className={`rounded-lg ml-1 `} />
+                            <Image width={20} height={20} src={user.avatar} alt="avatar" className={`rounded-lg ml-1 text-center `} />
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-semibold">{user.name}</span>
-                                <span className="truncate text-xs">{user.email}</span>
+                                <span className="truncate font-semibold">{username}</span>
                             </div>
                             <ChevronsUpDown className="ml-auto size-4" />
                         </SidebarMenuButton>

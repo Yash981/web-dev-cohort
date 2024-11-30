@@ -11,7 +11,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-import { Trash2Icon } from "lucide-react"
+import { Trash } from "lucide-react"
 import { useRouter } from "next/navigation"  
   export function AlertDialogDelete({id}:{id:string}) {
     const router = useRouter()
@@ -31,7 +31,7 @@ import { useRouter } from "next/navigation"
     return (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-            <Trash2Icon cursor={"pointer"} />
+            <Trash cursor={"pointer"} />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

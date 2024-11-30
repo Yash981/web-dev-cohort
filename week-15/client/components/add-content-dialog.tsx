@@ -13,7 +13,7 @@ export function AddContentDialog() {
   const { isOpen, onClose, isShareBrainModel } = useDialogStore()
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md mx-auto">
+      <DialogContent className="sm:max-w-xl mx-auto ">
         {isShareBrainModel ?
           <>
             <DialogHeader>

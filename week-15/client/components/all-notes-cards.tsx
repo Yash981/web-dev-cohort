@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import {  Share2Icon } from "lucide-react";
+import { FileText, LinkIcon, Share2Icon, Type, Youtube } from "lucide-react";
 import { Badge } from "./ui/badge";
 import Link from "next/link";
 import Script from "next/script";
@@ -15,9 +15,11 @@ import { AlertDialogDelete } from "./delete-alert-dialog";
 import { useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-const NotesCards = ({ link, title, type, createdAt, tags,id }: ContentsProp) => {
-    console.log(link?.split('v=')[1]?.split('&')[0],'link',link)
-    const extractVideoId = (url:string) => {
+import { Image as Img } from 'lucide-react';
+import XIcon from "@/components/x-icon";
+const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) => {
+    console.log(link?.split('v=')[1]?.split('&')[0], 'link', link)
+    const extractVideoId = (url: string) => {
         const regExp = /(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/.+\?v=))([\w-]{11})/;
         const match = url.match(regExp);
         return match ? match[1] : null;
@@ -28,14 +30,26 @@ const NotesCards = ({ link, title, type, createdAt, tags,id }: ContentsProp) => 
 
     const [showIframe, setShowIframe] = useState(false);
     const params = useParams()
+    const getTypeIcon = (type: string,link:string) => {
+        switch (type) {
+            case 'IMAGE':
+                return <Img className="w-4 h-4" />
+            case 'ARTICLE':
+                return <FileText className="w-4 h-4" />
+            case 'LINK':
+                return (link.includes('twitter.com') || link.includes('x.com')) ? <XIcon size={16}/>:(link.includes('youtube.com')) ? <Youtube className="w-4 h-4"/> : <LinkIcon className="w-4 h-4" />
+            default:
+                return <Type className="w-4 h-4" />
+        }
+    }
     return (
         <>
             <Card className="w-[350px]  mt-10 min-h-64 relative">
                 <CardHeader className="flex justify-between flex-row">
-                    <CardTitle>{title}</CardTitle>
+                    <CardTitle className="flex gap-2 justify-center items-center"><span>{getTypeIcon(type,thumbnailUrl ? thumbnailUrl: link!)}</span>{title}</CardTitle>
                     {!params.sharelink && <div className="flex gap-4">
                         <Share2Icon cursor={"pointer"} />
-                        <AlertDialogDelete id={id}/> 
+                        <AlertDialogDelete id={id} />
                     </div>}
                 </CardHeader>
                 <CardContent>
@@ -51,11 +65,11 @@ const NotesCards = ({ link, title, type, createdAt, tags,id }: ContentsProp) => 
                             </blockquote>
                             <Script
                                 src="https://platform.twitter.com/widgets.js"
-                                strategy="lazyOnload" 
+                                strategy="lazyOnload"
                             />
-                            
+
                         </>
-                    ) : ( videoId ? (
+                    ) : (videoId ? (
                         showIframe ? (
                             <iframe
                                 width="320"
@@ -68,22 +82,25 @@ const NotesCards = ({ link, title, type, createdAt, tags,id }: ContentsProp) => 
                                 allowFullScreen
                                 loading="lazy"
                             ></iframe>
-                        ) : (thumbnailUrl && 
-                                <Image src={thumbnailUrl} alt="YouTube Thumbnail" width={500} height={500} onClick={() => setShowIframe(true)} style={{ cursor: 'pointer' }} title="Play"/>
+                        ) : (thumbnailUrl &&
+                            <Image src={thumbnailUrl} alt="YouTube Thumbnail" width={500} height={500} onClick={() => setShowIframe(true)} style={{ cursor: 'pointer' }} title="Play" />
                         )
-                    ) :
-                        <div className="">
+                    ) : type === 'IMAGE' ?
+                        <>
+                            <Image src={link!} width={400} height={400} alt="Image" />
+                        </>
+                        : (<div className="">
                             <Link href={link!} className="" target="_blank" rel="noopener noreferrer">
                                 <span className="underline cursor-pointer">
                                     {link}
                                 </span>
                             </Link>
-                        </div>
+                        </div>)
                     )
                     }
                 </CardContent>
                 <CardFooter className="grid gap-2">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                         {tags && tags.map((tag: Tag) => {
                             return (
                                 <div key={tag.id}>

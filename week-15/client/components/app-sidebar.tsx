@@ -1,4 +1,4 @@
-
+"use client"
 import { File, Hash, Link, Twitter,  Youtube } from "lucide-react"
 
 import {
@@ -13,6 +13,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { NavUser } from "./nav-user"
+import { useUserStore } from "@/stores"
+import { useParams } from "next/navigation"
 // Menu items.
 const items = [
   {
@@ -44,6 +46,8 @@ const items = [
 
 
 export function AppSidebar() {
+  const {username} = useUserStore()
+  const params = useParams()
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarContent>
@@ -65,9 +69,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      {username && !params.sharelink && <SidebarFooter>
         <NavUser/>
-      </SidebarFooter>
+      </SidebarFooter>}
 
     </Sidebar>
   )

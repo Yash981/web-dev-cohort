@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   images:{
     remotePatterns:[{
       hostname: "img.youtube.com"
+    },{
+      hostname:"res.cloudinary.com"
     }]
   }
 };

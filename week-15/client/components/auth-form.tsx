@@ -11,6 +11,7 @@ import { SignupRouteAction } from "@/app/actions/auth-route/signup-route-action"
 import { useRouter } from "next/navigation";
 import { LoginRouteAction } from "@/app/actions/auth-route/login-route-action";
 import { useState } from "react";
+import { useUserStore } from "@/stores";
 
 export const AuthFormSchema = z.object({
     username: z.string().min(3).max(20).refine((val) =>
@@ -40,6 +41,7 @@ type AuthFormProps = {
 }
 export const AuthPageForm = ({ page }: AuthFormProps) => {
     const [serverError, setServerError] = useState<string | null>(null);
+    const { setUsername } = useUserStore()
     const router = useRouter()
     const form = useForm<z.infer<typeof AuthFormSchema>>({
         resolver: zodResolver(AuthFormSchema),
@@ -64,6 +66,7 @@ export const AuthPageForm = ({ page }: AuthFormProps) => {
                     return
                 }
                 router.push('/login')
+                
                 return response
             } catch (error) {
                 console.log(error, 'Error Signingup')
@@ -78,6 +81,7 @@ export const AuthPageForm = ({ page }: AuthFormProps) => {
                     setServerError(response.errors.message)
                     return
                 }
+                setUsername(response.data.username as string)
                 router.push('/')
                 return response
             } catch (error) {
