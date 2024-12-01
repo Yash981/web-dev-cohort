@@ -23,7 +23,7 @@ const items = [
     icon: Twitter
   },
   {
-    title: "Videos",
+    title: "Images",
     url: "#",
     icon: Youtube,
   },

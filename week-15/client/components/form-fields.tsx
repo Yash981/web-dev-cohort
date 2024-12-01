@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
-import MarkdownEditor from "./markdown-editor"
 import { useState } from "react"
 import { TagInput } from "./ui/tag-input"
 import Image from "next/image"
 import { AddContents } from "@/app/actions/add-content-action"
 import { useRouter } from "next/navigation"
 import { useDialogStore } from "@/stores"
+import { Textarea } from "./ui/textarea"
 const AddContentSchema = z.object({
     title: z.string().min(3, "Minimum 3 Characters required"),
     type: z.enum(["IMAGE", "ARTICLE", "LINK"], {
@@ -35,7 +35,8 @@ const AddContentSchema = z.object({
         .array(z.string().max(15, 'Too long name'))
         .max(20, 'Too many tags')
         .nonempty('At least one tag is required'),
-    tag: z.string().optional()
+    tag: z.string().optional(),
+    article:z.string().optional()
 }).superRefine((data, ctx) => {
     if (data.type === "IMAGE" && !data.image) {
         ctx.addIssue({
@@ -47,9 +48,16 @@ const AddContentSchema = z.object({
     if (data.type === "LINK" && !data.link) {
         ctx.addIssue({
             path: ["link"],
-            message: "Link is required for LINKS type",
+            message: "Link is required for LINK type",
             code: z.ZodIssueCode.custom,
         });
+    }
+    if(data.type === 'ARTICLE' && !data.article){
+        ctx.addIssue({
+            path: ["article"],
+            message: "article is required for ARTICLE type",
+            code: z.ZodIssueCode.custom
+        })
     }
     if (data.tags.length === 0) {
         ctx.addIssue({
@@ -74,12 +82,13 @@ export const FormFields = () => {
             link: "",
             tags: [],
             tag: "",
+            article:""
         }
     });
 
     const onSubmit = async (data: z.infer<typeof AddContentSchema>) => {
         const response = AddContentSchema.safeParse(data)
-        console.log(response.data,response.success,response.error)
+        // console.log(response.data,response.success,response.error)
         if(!response.success){
             console.log("Invalid Inputttt",response.error)
             return;
@@ -93,6 +102,9 @@ export const FormFields = () => {
             }
             if (data.type === 'IMAGE' && data.image) {
                 formData.append('image', data.image);
+            }
+            if(data.type === 'ARTICLE' && data.article){
+                formData.append('article',data.article)
             }
             data.tags.forEach((tag, index) => {
                 formData.append(`tags[${index}]`, tag);
@@ -217,7 +229,26 @@ export const FormFields = () => {
                         />
                     )}
 
-                    {showField === 'ARTICLE' && <MarkdownEditor />}
+                    {showField === 'ARTICLE' && <FormField
+                            control={form.control}
+                            name="article"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel >Enter Text here</FormLabel>
+                                    <FormControl>
+                                        <div className="relative">
+                                            <Textarea
+                                                rows={4}
+                                                {...field}
+                                                className="pl-2 h-11 bg-background/50"
+                                                placeholder="Please Enter Your text here"
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />}
                     {showField === 'LINK' &&
                         <FormField
                             control={form.control}

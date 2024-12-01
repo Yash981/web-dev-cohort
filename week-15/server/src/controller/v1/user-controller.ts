@@ -104,14 +104,14 @@ export const AddContent = async (req: Request, res: Response) => {
   const parsedData = {
     title: req.body.title,
     type: req.body.type,
-    link: req.body.type === 'LINK' ? req.body.link : undefined,
+    link: req.body.type === 'LINK' ? req.body.link : req.body.type === 'ARTICLE' ? req.body.article:undefined,
     tags: req.body.tags ? 
       (Array.isArray(req.body.tags) ? req.body.tags : [req.body.tags]) 
       : []
   };
-  console.log(parsedData,'parsee')
+  // console.log(parsedData,'parsee')
   //@ts-ignore
-  console.log(req?.file,'req file b4')
+  // console.log(req?.file,'req file b4')
 
     //@ts-ignore
   if(parsedData.type==='IMAGE' && !req.file) {
@@ -119,10 +119,10 @@ export const AddContent = async (req: Request, res: Response) => {
     return 
   }
   //@ts-ignore
-  console.log(req?.file,'req file')
+  // console.log(req?.file,'req file')
   //@ts-ignore
   const imageUrl = req.file?.path ?? '';
-  console.log(imageUrl,'imageUrl')
+  // console.log(imageUrl,'imageUrl')
   const { type, link, title, tags = [] } = parsedData;
   // console.log(AddContentParsedData.data,'here data')
   try {
@@ -142,7 +142,7 @@ export const AddContent = async (req: Request, res: Response) => {
     const content = await prisma.content.create({
       data: {
         type: type,
-        link:  type==='IMAGE' ? imageUrl : link!,
+        link:  type==='IMAGE' ? imageUrl : link! ,
         title: title,
         userId: req.user?.id as string,
       },

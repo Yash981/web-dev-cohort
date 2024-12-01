@@ -25,6 +25,7 @@ export const AddContentschema = z.object({
     link: z.string().optional(),
     title:z.string(),
     image: z.instanceof(File).optional(),
+    article:z.string().optional(),
     tags: z.array(z.string()).optional()
 })
 

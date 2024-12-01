@@ -89,13 +89,17 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
                         <>
                             <Image src={link!} width={400} height={400} alt="Image" />
                         </>
-                        : (<div className="">
+                        : (type === 'LINK' ? <div className="">
                             <Link href={link!} className="" target="_blank" rel="noopener noreferrer">
                                 <span className="underline cursor-pointer">
                                     {link}
                                 </span>
                             </Link>
-                        </div>)
+                        </div>:
+                            <div className="">
+                                <span>{link}</span>
+                            </div>
+                        )
                     )
                     }
                 </CardContent>

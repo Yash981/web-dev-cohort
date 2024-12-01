@@ -9,11 +9,11 @@ import { useDialogStore } from "@/stores"
 import { FormFields } from "./form-fields"
 import ShareBrainModel from "./share-brain-model"
 
-export function AddContentDialog() {
+export function AddOrShareDialog() {
   const { isOpen, onClose, isShareBrainModel } = useDialogStore()
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-xl mx-auto ">
+      <DialogContent className="sm:max-w-md ">
         {isShareBrainModel ?
           <>
             <DialogHeader>
