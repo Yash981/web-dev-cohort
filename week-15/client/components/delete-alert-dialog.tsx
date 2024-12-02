@@ -1,5 +1,5 @@
 "use client"
-import { deleteContent } from "@/app/actions/delete-content-action"
+import { deleteContent } from "@/actions/delete-content-action"
 import {
     AlertDialog,
     AlertDialogAction,

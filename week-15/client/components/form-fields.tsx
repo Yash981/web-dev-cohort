@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { useState } from "react"
 import { TagInput } from "./ui/tag-input"
 import Image from "next/image"
-import { AddContents } from "@/app/actions/add-content-action"
+import { AddContents } from "@/actions/add-content-action"
 import { useRouter } from "next/navigation"
 import { useDialogStore } from "@/stores"
 import { Textarea } from "./ui/textarea"

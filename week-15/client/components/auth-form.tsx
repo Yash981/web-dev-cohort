@@ -7,9 +7,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { SignupRouteAction } from "@/app/actions/auth-route/signup-route-action";
+import { SignupRouteAction } from "@/actions/auth-route/signup-route-action";
 import { useRouter } from "next/navigation";
-import { LoginRouteAction } from "@/app/actions/auth-route/login-route-action";
+import { LoginRouteAction } from "@/actions/auth-route/login-route-action";
 import { useState } from "react";
 import { useUserStore } from "@/stores";
 

@@ -1,7 +1,7 @@
 "use client"
 import { Copy, Verified } from "lucide-react";
 import { Button } from "./ui/button";
-import { ShareBrainLink } from "@/app/actions/share-brain-action";
+import { ShareBrainLink } from "@/actions/share-brain-action";
 import { useState } from "react";
 
 const ShareBrainModel = () => {

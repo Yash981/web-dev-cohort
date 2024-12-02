@@ -1,6 +1,6 @@
 import NotesCards from "@/components/all-notes-cards";
 import HomeComponent from "@/components/home-component";
-import { getAllContents } from "./actions/contents";
+import { getAllContents } from "@/actions/contents";
 export interface Tag{
   id:string,
   title:string
@@ -17,7 +17,7 @@ export interface ContentsProp {
 }
 export default async function Home() {
   const contents = await getAllContents()
-  console.log('/',contents)
+  // console.log('/',contents)
   if (!contents || contents.contents.length === 0) {
     return (
       <>

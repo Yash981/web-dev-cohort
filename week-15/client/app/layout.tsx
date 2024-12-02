@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/components/theme-provider"
 import DialogProvider from "@/providers/dialog-provider";
+import { ClientSidebar } from "@/components/client-sidebar-provider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -37,13 +36,9 @@ export default  function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <SidebarTrigger className="hover:bg-transparent" />
+          <ClientSidebar>
               {children}
-            </SidebarInset>
-          </SidebarProvider>
+          </ClientSidebar>
         </ThemeProvider>
       </body>
     </html>

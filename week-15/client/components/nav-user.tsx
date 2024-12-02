@@ -18,7 +18,7 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import { useTransition } from "react"
-import { logoutAction } from "@/app/actions/auth-route/logout-route-action"
+import { logoutAction } from "@/actions/auth-route/logout-route-action"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 import User from '../public/user.svg'
@@ -27,7 +27,7 @@ import { useUserStore } from "@/stores"
 
 export function NavUser() {
     const { theme } = useTheme()
-    const { username } = useUserStore()
+    const { username,clearUserData } = useUserStore()
     const user = {
             name: "shadcn",
             email: "m@example.com",
@@ -60,7 +60,8 @@ export function NavUser() {
                     >
                         <DropdownMenuItem onClick={() => {
                             startTransition(() => {
-                                logoutAction()
+                                logoutAction();
+                                clearUserData();
                             })
                         }}>
                             <LogOut />
