@@ -6,7 +6,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer base {
+/* @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -76,8 +76,115 @@ body {
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
+} */
+@layer base {
+  :root {
+    /* Background & Foreground */
+    --background: 210 20% 98%; 
+    --foreground: 210 20% 20%;
 
+    /* Card & Popover */
+    --card: 210 20% 97%;
+    --card-foreground: 210 20% 25%;
+    --popover: 210 20% 98%;
+    --popover-foreground: 210 20% 20%;
+
+    /* Primary Colors */
+    --primary: 200 89% 54%; /* sky-400 */
+    --primary-foreground: 0 0% 98%;
+
+    /* Secondary Colors */
+    --secondary: 190 80% 85%;
+    --secondary-foreground: 190 50% 10%;
+
+    /* Muted Colors */
+    --muted: 210 20% 96%;
+    --muted-foreground: 210 15% 50%; /* gray-400 */
+
+    /* Accent Colors */
+    --accent: 190 95% 75%; /* cyan-300 */
+    --accent-foreground: 190 100% 10%;
+
+    /* Destructive Colors */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Border & Input */
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 210 20% 4%;
+
+    /* Chart Colors */
+    --chart-1: 200 89% 54%;
+    --chart-2: 190 95% 75%;
+    --chart-3: 210 50% 30%;
+    --chart-4: 180 70% 45%;
+    --chart-5: 160 60% 40%;
+
+    /* Radius */
+    --radius: 0.5rem;
+    --sidebar-background: 200 50% 97%;
+    --sidebar-foreground: 200 20% 20%;
+    --sidebar-primary: 200 70% 15%;
+    --sidebar-primary-foreground: 200 50% 98%;
+    --sidebar-accent: 190 40% 90%;
+    --sidebar-accent-foreground: 190 50% 10%;
+    --sidebar-border: 200 20% 85%;
+    --sidebar-ring: 200 62% 48%;
+  }
+
+  .dark {
+    /* Background & Foreground */
+    --background: 210 20% 10%;
+    --foreground: 210 20% 98%;
+
+    /* Card & Popover */
+    --card: 210 20% 15%;
+    --card-foreground: 210 20% 95%;
+    --popover: 210 20% 10%;
+    --popover-foreground: 210 20% 98%;
+
+    /* Primary Colors */
+    --primary: 200 89% 64%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary Colors */
+    --secondary: 190 80% 25%;
+    --secondary-foreground: 190 50% 95%;
+
+    /* Muted Colors */
+    --muted: 210 20% 25%;
+    --muted-foreground: 210 15% 60%;
+
+    /* Accent Colors */
+    --accent: 190 95% 65%;
+    --accent-foreground: 190 100% 95%;
+
+    /* Destructive Colors */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Border & Input */
+    --border: 210 20% 25%;
+    --input: 210 20% 25%;
+    --ring: 210 20% 83%;
+
+    /* Chart Colors */
+    --chart-1: 200 89% 44%;
+    --chart-2: 190 95% 55%;
+    --chart-3: 210 50% 20%;
+    --chart-4: 180 70% 35%;
+    --chart-5: 160 60% 30%;
+    --sidebar-background: 200 20% 15%;
+   --sidebar-foreground: 200 50% 95%;
+   --sidebar-primary: 200 62% 58%;
+   --sidebar-primary-foreground: 200 10% 100%;
+   --sidebar-accent: 190 40% 25%;
+   --sidebar-accent-foreground: 190 50% 95%;
+   --sidebar-border: 200 20% 30%;
+   --sidebar-ring: 200 62% 58%;
+  }
+}
 @layer base {
   * {
     @apply border-border;

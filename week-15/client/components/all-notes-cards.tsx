@@ -44,7 +44,7 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
     }
     return (
         <>
-            <Card className="w-[350px]  mt-10 min-h-64 relative">
+            <Card className="w-[350px]  min-h-64 relative">
                 <CardHeader className="flex justify-between flex-row">
                     <CardTitle className="flex gap-2 justify-center items-center"><span>{getTypeIcon(type,thumbnailUrl ? thumbnailUrl: link!)}</span>{title}</CardTitle>
                     {!params.sharelink && <div className="flex gap-4">

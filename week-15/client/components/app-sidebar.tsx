@@ -52,7 +52,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="inset">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel title="brain">Second Brain</SidebarGroupLabel>
+          <SidebarGroupLabel title="brain" className="text-3xl mb-5 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Second Brain</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

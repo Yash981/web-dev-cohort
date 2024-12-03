@@ -31,9 +31,13 @@ export default async function Home() {
   return (
     <div className="w-full flex flex-col flex-wrap">
       <HomeComponent />
-      <div className="mr-10 ml-10 flex gap-2 flex-wrap justify-start items-start">
+      <div className="columns-1 sm:columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 p-4">
         {contents && contents.contents.map((content: ContentsProp, index: number) => {
-          return <NotesCards link={content.link} type={content.type} key={index} title={content.title} createdAt={content.createdAt} tags={content.tags} id={content?.id}/>
+          return (
+          <div className="break-inside-avoid mb-6" key={index}>
+          <NotesCards link={content.link} type={content.type} key={index} title={content.title} createdAt={content.createdAt} tags={content.tags} id={content?.id}/>
+          </div>
+          )
         })}
       </div>
     </div>
