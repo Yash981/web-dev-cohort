@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 
 export function ClientSidebar({ children }: PropsWithChildren) {
   const pathname = usePathname()
-  const protectedRoutes = (pathname === '/login' || pathname === '/signup')
+  console.log(pathname,'pathname')
+  const protectedRoutes = (pathname === '/login' || pathname === '/signup' || pathname.startsWith('/brain/'))
   return (
     <>
       {!protectedRoutes ?

@@ -10,13 +10,13 @@ import {
 import { FileText, LinkIcon, Share2Icon, Type, Youtube } from "lucide-react";
 import { Badge } from "./ui/badge";
 import Link from "next/link";
-import Script from "next/script";
 import { AlertDialogDelete } from "./delete-alert-dialog";
 import { useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Image as Img } from 'lucide-react';
 import XIcon from "@/components/x-icon";
+import { TwitterEmbed } from "./twitter-embed";
 const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) => {
     console.log(link?.split('v=')[1]?.split('&')[0], 'link', link)
     const extractVideoId = (url: string) => {
@@ -42,6 +42,13 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
                 return <Type className="w-4 h-4" />
         }
     }
+    console.log(<blockquote
+        className="twitter-tweet"
+        data-lang="en"
+        data-theme="light"
+    >
+        <a href={link}></a>
+    </blockquote>,'here',link)
     return (
         <>
             <Card className="w-[350px]  min-h-64 relative">
@@ -54,9 +61,9 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
                 </CardHeader>
                 <CardContent>
                     {type === 'LINK' &&
-                        link?.includes("twitter.com") ? (
+                        (link?.includes("twitter.com") || link?.includes('x.com')) ? (
                         <>
-                            <blockquote
+                            {/* <blockquote
                                 className="twitter-tweet"
                                 data-lang="en"
                                 data-theme="light"
@@ -66,7 +73,8 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
                             <Script
                                 src="https://platform.twitter.com/widgets.js"
                                 strategy="lazyOnload"
-                            />
+                            /> */}
+                            <TwitterEmbed link={link}/>
 
                         </>
                     ) : (videoId ? (
