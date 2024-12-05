@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
-import { JWT_SECRET } from "../controller/v1/user-controller";
 export const userMiddleware = (req:Request,res:Response,next:NextFunction) =>{
     console.log(req.cookies,'cookies on server')
     const token = req.cookies.token
@@ -11,7 +10,7 @@ export const userMiddleware = (req:Request,res:Response,next:NextFunction) =>{
         return;
     }
     try {
-        const decoded = jwt.verify(token as string,JWT_SECRET) as { id: string}
+        const decoded = jwt.verify(token as string,process.env.JWT_SECRET as string) as { id: string}
         console.log(decoded,'decoded')
         //@ts-ignore
         req.user = {id:decoded.userid};

@@ -16,7 +16,7 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.10.1",
     "express": "^4.21.1",
     "prisma": "^5.22.0",
     "tsx": "^4.19.2",

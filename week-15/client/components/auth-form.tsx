@@ -66,7 +66,7 @@ export const AuthPageForm = ({ page }: AuthFormProps) => {
                     return
                 }
                 router.push('/login')
-                
+
                 return response
             } catch (error) {
                 console.log(error, 'Error Signingup')
@@ -76,8 +76,8 @@ export const AuthPageForm = ({ page }: AuthFormProps) => {
         } else {
             try {
                 const response = await LoginRouteAction(parsedAuthForm.data)
-                if(!response.success){
-                    console.log(response.errors,'Error in signingIn')
+                if (!response.success) {
+                    console.log(response.errors, 'Error in signingIn')
                     setServerError(response.errors.message)
                     return
                 }
@@ -131,6 +131,20 @@ export const AuthPageForm = ({ page }: AuthFormProps) => {
                 )}
                 <div className="flex justify-center ">
                     <Button variant={"default"} type="submit" className="w-32">Submit</Button>
+                </div>
+                <div className="mx-auto">
+                    <Button variant={"link"} type="button" onClick={
+                        async () => {
+                            try {
+                                const response = await LoginRouteAction({ username: "Guest-User", password: "Hello1234@" })
+                                setUsername(response.data.username as string)
+                                router.push('/')
+                                return response
+                            } catch (error) {
+                                console.log(error, 'Error SigningIn')
+                                setServerError('An unexpected error occurred during signIn')
+                            }
+                        }}>SignIn as Guest</Button>
                 </div>
                 <div className="flex justify-center text-center">
                     {page === 'signup' ? <p>

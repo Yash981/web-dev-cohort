@@ -8,8 +8,9 @@ import crypto from "crypto";
 import prisma from "../../db/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
+dotenv.config()
 
-export const JWT_SECRET = "Yashwanth12627";
 export const UserSignup = async (req: Request, res: Response) => {
   const signUpParsedData = userAuthschema.safeParse(req.body);
   if (!signUpParsedData.success) {
@@ -79,7 +80,7 @@ export const UserSignin = async (req: Request, res: Response) => {
         userid: existingUser.id,
         username: existingUser.username,
       },
-      JWT_SECRET
+      process.env.JWT_SECRET as string
     );
     res.setHeader('Set-Cookie', [
       `token=${userToken}; Path=/; HttpOnly; Max-Age=${7 * 24 * 60 * 60}; ${
