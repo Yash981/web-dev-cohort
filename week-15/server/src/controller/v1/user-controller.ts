@@ -9,6 +9,7 @@ import prisma from "../../db/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv'
+import { generateEmbedding, summarizeSearchResults } from "../../lib/embedding-service";
 dotenv.config()
 
 export const UserSignup = async (req: Request, res: Response) => {
@@ -127,6 +128,8 @@ export const AddContent = async (req: Request, res: Response) => {
   const { type, link, title, tags = [] } = parsedData;
   // console.log(AddContentParsedData.data,'here data')
   try {
+    const embedding = await generateEmbedding(title);
+    console.log(embedding,'embedding')
     const tagIds = await Promise.all(
       tags && tags.map(async (tagTitle: string) => {
         const existingTag = await prisma.tags.findUnique({
@@ -145,6 +148,7 @@ export const AddContent = async (req: Request, res: Response) => {
         type: type,
         link:  type==='IMAGE' ? imageUrl : link! ,
         title: title,
+        embedding:embedding,
         userId: req.user?.id as string,
       },
     });
@@ -342,18 +346,67 @@ export const fetchSharedLinkContent = async (req: Request, res: Response) => {
 
 export const UserLogout = async (req: Request, res: Response) => {
   try {
-    // Clear the token cookie on the server-side
     res.clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/'
     });
-
-    // Optional: Implement token blacklisting if needed
-    // This depends on your authentication strategy
     res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error during logout', error });
   }
 };
+
+export const performVectorSearch = async(req:Request,res:Response) =>{
+    try {
+      const query = req.query.query as string
+      const userId = req.user?.id as string
+      const embedding = await generateEmbedding(query);
+  
+      const pipeline = [
+        {
+          $vectorSearch: {
+            index: "vector_index",
+            path: "embedding",
+            queryVector: embedding,
+            numCandidates: 10,
+            limit: 5,
+          },
+        },
+        {
+          $match: {
+            userId: { $oid: userId }
+          }
+        },
+        {
+          $project: {
+            score: {
+              $meta: "vectorSearchScore",
+            },
+            content: "$$ROOT",
+          },
+        },
+      ];
+      // console.log(pipeline,'pipe')
+      const documents = (await prisma.content.aggregateRaw({pipeline})) as any ;
+      console.log(documents,'doccsss')
+      if (!documents || documents.length === 0) {
+        res.status(404).send({ error: "No results found" });
+        return;
+      }
+      const cleanedDocuments = documents.map((doc: { content: any; score: string; }) => {
+        const { content, score } = doc;  
+        const { embedding, ...cleanContent } = content;  
+        return { content: cleanContent, score };
+      });
+      const result = await summarizeSearchResults(cleanedDocuments,query)
+      res.send({
+        summarizedContent: result
+      });
+    } catch (err) {
+      console.error("Error during vector search:", err.message);
+      res.status(500).send({ error: "Something went wrong" });
+    }
+  
+}

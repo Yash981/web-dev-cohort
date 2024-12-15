@@ -6,7 +6,7 @@ export const ShareBrainLink = async (share: boolean) => {
   try {
     const cookieStore = cookies();
     const token = (await cookieStore).get('token')?.value;
-    const response = await fetch(`http://localhost:9000/api/v1/brain/share`, {
+    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/brain/share`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

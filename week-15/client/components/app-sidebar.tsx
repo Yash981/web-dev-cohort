@@ -1,5 +1,5 @@
 "use client"
-import { File, Hash, Link, Twitter,  Youtube } from "lucide-react"
+import { File, Hash, Link as IconLink, Search, Twitter,  Youtube } from "lucide-react"
 
 import {
   Sidebar,
@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/sidebar"
 import { NavUser } from "./nav-user"
 import { useUserStore } from "@/stores"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
+import Link from "next/link"
 // Menu items.
 const items = [
   {
@@ -35,33 +36,41 @@ const items = [
   {
     title: "Links",
     url: "#",
-    icon: Link,
+    icon: IconLink,
   },
   {
     title: "Tags",
     url: "#",
     icon: Hash,
-  },
+  },{
+    title:"Quick Search",
+    url:"/quick-search",
+    icon: Search
+  }
 ]
 
 
 export function AppSidebar() {
   const {username} = useUserStore()
   const params = useParams()
+  const router = useRouter()
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel title="brain" className="text-3xl mb-5 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Second Brain</SidebarGroupLabel>
+          <SidebarGroupLabel title="brain" className="text-3xl mb-5 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent cursor-pointer" onClick={()=>{
+            router.refresh();
+            router.push('/');
+            }}>Second Brain</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title}>
-                    <a href={item.url}>
+                    <Link href={item.url} key={item.title}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

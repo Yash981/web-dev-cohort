@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AddContent, deleteContent, fetchSharedLinkContent, getAllContents, shareBrainLink, UserLogout, UserSignin, UserSignup } from "../../controller/v1/user-controller";
+import { AddContent, deleteContent, fetchSharedLinkContent, getAllContents, performVectorSearch, shareBrainLink, UserLogout, UserSignin, UserSignup } from "../../controller/v1/user-controller";
 import multer from 'multer';
 const cloudinary = require('cloudinary').v2;
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
@@ -40,3 +40,5 @@ Routes.post('/brain/share',userMiddleware,shareBrainLink)
 Routes.get('/brain/:sharelink',fetchSharedLinkContent)
 //change
 Routes.get('/logout',UserLogout)
+
+Routes.get("/vectorSearch", userMiddleware,performVectorSearch);

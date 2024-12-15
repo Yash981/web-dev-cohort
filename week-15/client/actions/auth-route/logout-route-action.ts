@@ -7,7 +7,7 @@ export async function logoutAction() {
   try {
     (await cookies()).delete('token');
 
-    await fetch('http://localhost:9000/api/v1/logout', {
+    await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

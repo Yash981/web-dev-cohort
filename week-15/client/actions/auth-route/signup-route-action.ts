@@ -3,7 +3,7 @@
 export const SignupRouteAction = async (data: any) => {
   console.log(data, "data server action");
   try {
-    const response = await fetch(`http://localhost:9000/api/v1/signup`, {
+    const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

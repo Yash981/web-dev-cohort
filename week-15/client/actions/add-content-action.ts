@@ -5,7 +5,7 @@ export const AddContents = async (contentData: any) =>{
     try {
         const cookieStore = cookies();
         const token = (await cookieStore).get('token')?.value;
-        const response = await fetch(`http://localhost:9000/api/v1/content`,
+        const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/content`,
             {
                 method: "POST",
                 headers: {

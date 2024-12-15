@@ -3,7 +3,7 @@
 export const fetchShareBrainLink = async (sharelink:string) =>{
     try {
        
-        const response = await fetch(`http://localhost:9000/api/v1/brain/${sharelink}`,{
+        const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/brain/${sharelink}`,{
             method:"GET",
             headers:{
                 'Content-Type': 'application/json',

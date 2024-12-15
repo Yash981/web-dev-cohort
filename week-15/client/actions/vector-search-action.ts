@@ -1,19 +1,18 @@
 "use server"
 import { cookies } from 'next/headers';
 
-export const getAllContents = async () => {
+export const getVectorEmbedResults = async (query:string) => {
     try {
         const cookieStore = cookies();
         const token = (await cookieStore).get('token')?.value;
-        console.log((await cookieStore),'tokennnnn')
-        const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/content`,
+        const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/vectorSearch?query=${query}`,
             {
                 method:"GET",
                 credentials:"include",
                 headers: {
                     "Content-Type": "application/json",
-                    "Cookie": token ? `token=${token}` : ''
-                }
+                    "Cookie": token ? `token=${token}` : '',
+                },
             }
         )
         if(!response.ok){
@@ -23,7 +22,7 @@ export const getAllContents = async () => {
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Failed to fetch contents:', error);
-        throw new Error('Failed to fetch contents');
+        console.error('Failed to generate Vector embed Results', error);
+        throw new Error('Failed to generate Vector embed Results');
     }
 }
