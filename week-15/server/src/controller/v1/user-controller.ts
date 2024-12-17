@@ -404,8 +404,8 @@ export const performVectorSearch = async(req:Request,res:Response) =>{
       res.send({
         summarizedContent: result
       });
-    } catch (err) {
-      console.error("Error during vector search:", err.message);
+    } catch (error:any) {
+      console.error("Error during vector search:", error.message);
       res.status(500).send({ error: "Something went wrong" });
     }
   
