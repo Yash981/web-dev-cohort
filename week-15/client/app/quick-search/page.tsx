@@ -36,17 +36,8 @@ const QuickSearch: React.FC = () => {
             sender: 'user'
         };
 
-        // // Create bot message (placeholder response)
-        // const botMessage: Message = {
-        //     id: Date.now() + 1,
-        //     text: `You said: ${trimmedMessage}`,
-        //     sender: 'bot'
-        // };
-
-        // Update messages state
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-        
         try {
             setIsLoading(true)
             const res = await getVectorEmbedResults(trimmedQuery)
@@ -62,14 +53,14 @@ const QuickSearch: React.FC = () => {
 
             setIsLoading(false)
         }
+                form.reset();
 
-        // Reset form
-        form.reset();
+
+        
     };
 
     return (
         <div className="flex flex-col h-full max-w-full bg-[hsl(207.27deg 21.57% 10%)]">
-            {/* Message Display Area */}
             <div className="flex-grow overflow-y-auto p-4 space-y-4">
                 {messages.map((message) => (
                     <div

@@ -30,32 +30,33 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
 
     const [showIframe, setShowIframe] = useState(false);
     const params = useParams()
-    const getTypeIcon = (type: string,link:string) => {
+    const getTypeIcon = (type: string, link: string) => {
         switch (type) {
             case 'IMAGE':
                 return <Img className="w-4 h-4" />
             case 'ARTICLE':
                 return <FileText className="w-4 h-4" />
             case 'LINK':
-                return (link.includes('twitter.com') || link.includes('x.com')) ? <XIcon size={16}/>:(link.includes('youtube.com')) ? <Youtube className="w-4 h-4"/> : <LinkIcon className="w-4 h-4" />
+                return (link.includes('twitter.com') || link.includes('x.com')) ? <XIcon size={16} /> : (link.includes('youtube.com')) ? <Youtube className="w-4 h-4" /> : <LinkIcon className="w-4 h-4" />
             default:
                 return <Type className="w-4 h-4" />
         }
     }
-    console.log(<blockquote
-        className="twitter-tweet"
-        data-lang="en"
-        data-theme="light"
-    >
-        <a href={link}></a>
-    </blockquote>,'here',link)
+
     return (
         <>
             <Card className="w-[350px]  min-h-64 relative">
                 <CardHeader className="flex justify-between flex-row">
-                    <CardTitle className="flex gap-2 justify-center items-center"><span>{getTypeIcon(type,thumbnailUrl ? thumbnailUrl: link!)}</span>{title}</CardTitle>
+                    <CardTitle className="flex gap-2 justify-center items-center"><span>{getTypeIcon(type, thumbnailUrl ? thumbnailUrl : link!)}</span>{title}</CardTitle>
                     {!params.sharelink && <div className="flex gap-4">
-                        <Share2Icon cursor={"pointer"} />
+                        {type === 'LINK' && (
+                            <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cursor-pointer"
+                        ><Share2Icon />
+                        </a>)}
                         <AlertDialogDelete id={id} />
                     </div>}
                 </CardHeader>
@@ -63,18 +64,7 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
                     {type === 'LINK' &&
                         (link?.includes("twitter.com") || link?.includes('x.com')) ? (
                         <>
-                            {/* <blockquote
-                                className="twitter-tweet"
-                                data-lang="en"
-                                data-theme="light"
-                            >
-                                <a href={link}></a>
-                            </blockquote>
-                            <Script
-                                src="https://platform.twitter.com/widgets.js"
-                                strategy="lazyOnload"
-                            /> */}
-                            <TwitterEmbed link={link}/>
+                            <TwitterEmbed link={link} />
 
                         </>
                     ) : (videoId ? (
@@ -103,7 +93,7 @@ const NotesCards = ({ link, title, type, createdAt, tags, id }: ContentsProp) =>
                                     {link}
                                 </span>
                             </Link>
-                        </div>:
+                        </div> :
                             <div className="">
                                 <span>{link}</span>
                             </div>

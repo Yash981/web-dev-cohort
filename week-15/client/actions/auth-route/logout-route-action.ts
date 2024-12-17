@@ -4,8 +4,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function logoutAction() {
+  (await cookies()).delete('token');
   try {
-    (await cookies()).delete('token');
 
     await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/logout`, {
       method: 'POST',

@@ -1,13 +1,14 @@
 import { fetchShareBrainLink } from "@/actions/fetch-brain-action";
 import NotesCards from "@/components/all-notes-cards";
+type Params = Promise<{ sharelink: string }>
 
 const FetchSharedContents = async ({
     params
 }: {
-    params: { sharelink: string }
+    params: Params
 }) => {
-    const fetchSharedContents = await fetchShareBrainLink(params.sharelink)
-    if (fetchSharedContents && fetchSharedContents.contents.length === 0) {
+    const fetchSharedContents = await fetchShareBrainLink((await params).sharelink)
+    if (fetchSharedContents && fetchSharedContents?.contents?.length === 0) {
         return (
             <div className="w-full flex flex-col items-center justify-center min-h-[500px]">
                 <h1 className="text-2xl text-gray-500">No shared contents found</h1>

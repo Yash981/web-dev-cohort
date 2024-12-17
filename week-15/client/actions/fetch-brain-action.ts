@@ -16,7 +16,7 @@ export const fetchShareBrainLink = async (sharelink:string) =>{
             throw new Error(`${response.status} ${response.statusText}`)
         }
         const allContents = await response.json()
-        console.log(allContents,'allContents')
+        // console.log(allContents,'allContents')
         return allContents
     } catch (error) {
         console.log("Error Fetching content",error)

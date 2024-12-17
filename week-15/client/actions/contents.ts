@@ -2,10 +2,9 @@
 import { cookies } from 'next/headers';
 
 export const getAllContents = async () => {
+    const cookieStore = cookies();
+    const token = (await cookieStore).get('token')?.value;
     try {
-        const cookieStore = cookies();
-        const token = (await cookieStore).get('token')?.value;
-        console.log((await cookieStore),'tokennnnn')
         const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/content`,
             {
                 method:"GET",

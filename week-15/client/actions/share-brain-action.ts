@@ -3,9 +3,9 @@
 import { cookies } from "next/headers";
 
 export const ShareBrainLink = async (share: boolean) => {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('token')?.value;
   try {
-    const cookieStore = cookies();
-    const token = (await cookieStore).get('token')?.value;
     const response = await fetch(`${process.env.NEXT_BACKEND_URL}/api/v1/brain/share`, {
       method: "POST",
       headers: {
